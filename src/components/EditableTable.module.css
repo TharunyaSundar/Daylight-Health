@@ -1,0 +1,59 @@
+.tableWrapper {
+    overflow-x: auto;
+    margin-top: 20px;
+    margin: 20px auto; 
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+.tableWrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.tableWrapper th {
+    background-color: #f7f9fb;
+    color: #072635;
+    text-align: left;
+    padding: 12px;
+    border-bottom: 2px solid #d9e2ec;
+}
+
+.tableWrapper td {
+    padding: 10px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.tableWrapper tr:hover {
+    background-color: #f9fcff;
+}
+
+.syncButton {
+    margin-top: 20px;
+    padding: 10px 16px;
+    background-color: #02070e;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+  
+.syncButton:hover {
+    background-color: #4774b6;
+}
+
+.unexpectedHeader {
+    background-color: #ffe5e5;
+    color: #a00;
+    font-weight: bold;
+  }
+  
+  .unexpectedCell input {
+    background-color: #fff5f5;
+    border: 1px solid #e88;
+  }
+  

@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌞 Daylight Health – Patient CSV Uploader
+This is a Next.js application built for front-desk team. It enables easy uploading, validation, editing, and syncing of patient data from a CSV file.
 
-## Getting Started
+Deployed on: [Cloudflare Workers](https://daylight-health.tsundar.workers.dev/)
 
-First, run the development server:
+## 🚀 Features Implemented
+- ✅ **CSV Upload and Parsing** with validation
+- ✅ **Editable Table** to modify CSV data
+- ✅ **Detection of unexpected columns** with UI highlighting
+- ✅ **Graceful error handling** for:
+  - Empty/malformed files
+  - File size > 5MB
+  - Unexpected column headers
+  - Network errors during sync
+- ✅ **CRM Sync simulation** via POST `/api/sync` endpoint
+- ✅ **Cloudflare Workers Deployment** using `@opennextjs/cloudflare`
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 📦 Tech Stack
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- **Framework**: Next.js 15+
+- **UI Libraries**: HTML + CSS Modules
+- **CSV Parsing**: [PapaParse](https://www.papaparse.com/)
+- **Notifications**: [react-hot-toast](https://react-hot-toast.com/)
+- **Cloud Hosting**: Cloudflare Workers via `@opennextjs/cloudflare`
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
+Install Dependency : npm install
 
-## Learn More
+Install required packages: 
+npm install @opennextjs/cloudflare --save
+npm install wrangler --save-dev
 
-To learn more about Next.js, take a look at the following resources:
+ensure wrangler.toml exist in project root
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+ensure these scripts exist in your package.json:
+"scripts": {
+  "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+}
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run development server : npm run dev
 
-## Deploy on Vercel
+Deploy: npm run deploy
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
