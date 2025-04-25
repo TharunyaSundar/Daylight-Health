@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import styles from "./EditableTable.module.css"
 import toast from "react-hot-toast";
+import validateRows from "../utils/validateRows.js";
 
 //EditableTable Component
 export default function EditableTable({data, unexpectedHeaders=[]}){
@@ -23,8 +24,19 @@ export default function EditableTable({data, unexpectedHeaders=[]}){
         setRows(updated);
     };
 
+    const [validationErrors, setValidationErrors] = useState({});
+
     //Sync data to CRM
     const handleSync = async () => {
+
+      const error = validateRows(data);
+      if(error){
+        setValidationErrors(error);
+        return;
+      }
+
+      setValidationErrors({});
+
       setIsSyncing(true); //Disable button
       const syncToast = toast.loading("Syncing to CRM...");
 
@@ -79,7 +91,13 @@ export default function EditableTable({data, unexpectedHeaders=[]}){
                     <input
                       value={row[col]}
                       onChange={(e) => handleChange(rowIdx, col, e.target.value)}
+                      className={validationErrors[rowIdx]?.[col] ? styles.inputError : ""}
                     />
+                    {validationErrors[rowIdx]?.[col] && (
+                    <div className={styles.errorMsg}>
+                      {validationErrors[rowIdx][col]}
+                    </div>
+                )}
                   </td>
                 ))}
               </tr>
