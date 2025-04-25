@@ -1,8 +1,17 @@
 import Papa from "papaparse";
 import toast from "react-hot-toast";
+import Button from '@mui/material/Button';
+import styles from "./CSVUploader.module.css";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import { useRef } from "react";
+import Image from "next/image"; 
+import Paper from "@mui/material/Paper";
+
+
 //Component for uploading and parsing a CSV file.
 export default function CSVUploader({ onDataParsed, onUnexpectedHeaders }) {
-
+    const fileInputRef = useRef();
     const MAX_FILE_SIZE_MB = 5;
 
     const handleFileChange = (e) => {
@@ -69,19 +78,43 @@ export default function CSVUploader({ onDataParsed, onUnexpectedHeaders }) {
     };
 
     return (
-        <div style={{ marginBottom: 20 }}>
-            <label htmlFor="csvInput">Upload CSV: </label>{" "}
-            <input
-                type="file"
-                accept=".csv"
-                onChange={handleFileChange}
-                style={{
-                    padding: "6px 10px",
-                    border: "1px solid #ccc",
-                    borderRadius: "5px",
-                    fontSize: "14px",
-                }}
-            />
-        </div>
+        <Paper
+        elevation={2}
+        sx={{
+          p: 4,
+          textAlign: "center",
+          border: "2px dashed #ccc",
+          backgroundColor: "#FFFCE1",
+          maxWidth: 300,
+          maxHeight: 200,
+          mx: "auto",
+          borderRadius: 3,
+        }}
+      >
+        {/* Custom Upload Icon */}
+      <Box display="flex" justifyContent="center" >
+        <Image src="/upload.png" alt="Upload Icon" width={50} height={50} />
+      </Box>
+
+      <Typography variant="h6" color="primary" fontWeight="500">
+        Drop your CSV file here
+      </Typography>
+      <Typography variant="body2" sx={{ mt: 1, mb: 1 }}>
+        or
+      </Typography>
+      
+      <Button variant="contained" onClick={() => fileInputRef.current.click()}>
+        Browse Files
+      </Button>
+
+      <input
+        type="file"
+        id="csvInput"
+        accept=".csv"
+        onChange={handleFileChange}
+        ref={fileInputRef}
+        style={{ display: "none" }}
+      />
+    </Paper>
     );
 }

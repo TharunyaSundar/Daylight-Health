@@ -1,0 +1,42 @@
+.uploadBox {
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    width: 600px;
+    padding: 40px;
+    text-align: center;
+    background: linear-gradient(to bottom, #f9fbfd, #f0f4f8);
+    transition: 0.3s;
+    margin: 0 auto;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.04);
+  }
+  
+  .uploadBox:hover {
+    background: #e8f0fc;
+  }
+  
+  .uploadLabel {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #2b4f81;
+    font-size: 16px;
+  }
+  
+  .icon {
+    font-size: 36px;
+    margin-bottom: 10px;
+  }
+  
+  .orText {
+    margin: 10px 0;
+    font-weight: 500;
+    color: #555;
+  }
+  
+  .hiddenInput {
+    display: none;
+  }
+  
