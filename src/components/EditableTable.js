@@ -14,10 +14,13 @@ import {
 import styles from "./EditableTable.module.css"
 import toast from "react-hot-toast";
 import validateRows from "../utils/validateRows.js";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Tooltip from "@mui/material/Tooltip";
 
 //EditableTable Component
 export default function EditableTable({data, unexpectedHeaders=[]}){
     const [rows, setRows] = useState([]);
+    const [syncedRows, setSyncedRows] = useState([]);
     
     //track syncing state
     const [isSyncing, setIsSyncing]= useState(false);
@@ -25,6 +28,7 @@ export default function EditableTable({data, unexpectedHeaders=[]}){
     //recalculate rows when new data is passed
     useEffect(() => {
       setRows(data);
+      setSyncedRows([]);
     }, [data]);
 
     // Highlight unexpected columns
@@ -64,7 +68,7 @@ export default function EditableTable({data, unexpectedHeaders=[]}){
         const result = await res.json();
         console.table(rows);
         toast.success("Sync successful!", { id: syncToast });
-
+        setSyncedRows(rows.map((_, idx) => idx));
       }catch(err){
         if(err.name === "TypeError"){
           toast.error("Network error. Please check your connection.",{id: syncToast});
@@ -81,6 +85,10 @@ export default function EditableTable({data, unexpectedHeaders=[]}){
     if(!rows || rows.length === 0) return <Typography>No data to show.</Typography>
 
     const columns = Object.keys(rows[0]);
+    const unsyncRow = (rowIdx) => {
+      setSyncedRows((prev) => prev.filter((i) => i !== rowIdx));
+    };
+    
 
     return (
       <div className={styles.tableWrapper}>
@@ -112,31 +120,63 @@ export default function EditableTable({data, unexpectedHeaders=[]}){
                   {col}
                 </TableCell>
               ))}
+               <TableCell
+                  sx={{
+                    backgroundColor: "#FFFFFF",
+                    color: "#333",
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Status
+                </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {rows.map((row, rowIdx) => (
-              <TableRow key={rowIdx}
+          {rows.map((row, rowIdx) => {
+          const isSynced = syncedRows.includes(rowIdx);
+          return (
+            <TableRow
+              key={rowIdx}
               sx={{
-                "&:hover": { backgroundColor: "#FFFFFF" }
+                backgroundColor: isSynced ? "#e8f5e9" : "inherit",
+                "&:hover": { backgroundColor: "#FFFFFF" },
               }}
-              >
-                {columns.map((col) => (
-                  //hightlights unexpected columns
-                  <TableCell key={col}>
-                    <TextField
-                     fullWidth
-                      value={row[col]}
-                      onChange={(e) => handleChange(rowIdx, col, e.target.value)}
-                      error={!!validationErrors[rowIdx]?.[col]}
-                      helperText={validationErrors[rowIdx]?.[col]}
-                      variant="outlined"
-                      size="small"
+            >
+              {columns.map((col) => (
+                <TableCell key={col}>
+                  <TextField
+                    fullWidth
+                    value={row[col]}
+                    onChange={(e) => handleChange(rowIdx, col, e.target.value)}
+                    error={!!validationErrors[rowIdx]?.[col]}
+                    helperText={validationErrors[rowIdx]?.[col]}
+                    variant="outlined"
+                    size="small"
                   />
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
+                </TableCell>
+              ))}
+              <TableCell align="center">
+                {isSynced && (
+                   <>
+                   <Tooltip title="Synced">
+                     <CheckCircleIcon sx={{ color: "#4CAF50", mr: 1 }} />
+                   </Tooltip>
+                   <Button
+                     size="small"
+                     onClick={() => unsyncRow(rowIdx)}
+                     variant="text"
+                     sx={{ minWidth: "auto", padding: 0, fontSize: "0.75rem" }}
+                   >
+                     Edit
+                   </Button>
+                 </>
+                )}
+              </TableCell>
+            </TableRow>
+          );
+        })}
+
           </TableBody>
         </Table>
       </Box>        
