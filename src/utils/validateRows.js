@@ -2,7 +2,7 @@ export default function validateRows(rows){
     const errors = {}; 
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^(\d{10}|\d{3}-\d{3}-\d{4})$/
+    const phoneRegex = /^\d{10}$/
 
 
     for(let i = 0; i< rows.length; i++){
@@ -17,7 +17,10 @@ export default function validateRows(rows){
             } else if (key === "Email" && !emailRegex.test(value)){
                 rowErrors[key] = "Invalid email";
             } else if (key === "Phone" && !phoneRegex.test(value)){
-                rowErrors[key] = "Must be 10 digits";
+                const digitsOnly = value.replace(/\D/g, ""); // remove non-digits
+                if (!phoneRegex.test(digitsOnly)) {
+                    rowErrors[key] = "Phone must be exactly 10 digits";
+                }
             }
         }
 
@@ -27,4 +30,13 @@ export default function validateRows(rows){
     }
 
     return Object.keys(errors).length > 0 ? errors : null;
+}
+
+export function formatPhone(phone) {
+    if (!phone) return undefined;
+    const digitsOnly = phone.replace(/\D/g, "");
+    if (digitsOnly.length === 10) {
+      return `+1${digitsOnly}`;
+    }
+    return undefined;
 }
