@@ -33,10 +33,12 @@ export default function validateRows(rows){
 }
 
 export function formatPhone(phone) {
-    if (!phone) return undefined;
+    if (!phone) return null;
+  
     const digitsOnly = phone.replace(/\D/g, "");
-    if (digitsOnly.length === 10) {
-      return `+1${digitsOnly}`;
-    }
-    return undefined;
-}
+  
+    if (digitsOnly.length === 10) return `+1${digitsOnly}`;
+    if (digitsOnly.length === 11 && digitsOnly.startsWith("1")) return `+${digitsOnly}`;
+  
+    return null;
+  }
